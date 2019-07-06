@@ -1,0 +1,75 @@
+# Alert when the rate of events exceeds a threshold
+
+# (Optional)
+# Elasticsearch host
+es_host: localhost
+
+# (Optional)
+# Elasticsearch port
+es_port: 9200
+
+# (OptionaL) Connect with SSL to Elasticsearch
+#use_ssl: True
+
+# (Optional) basic-auth username and password for Elasticsearch
+#es_username: someusername
+#es_password: somepassword
+
+# (Required)
+# Rule name, must be unique
+name: MyWxRule
+
+# (Required)
+# Type of alert.
+# the frequency rule type alerts when num_events events occur with timeframe time
+type: frequency
+
+# (Required)
+# Index to search, wildcard supported
+index: logstash-*
+
+# (Required, frequency specific)
+# Alert when this many documents matching the query occur within a timeframe
+num_events: 1
+
+# (Required, frequency specific)
+# num_events must occur within this amount of time to trigger an alert
+#All “time” formats are of the form unit: X where unit is one of weeks, days, hours, minutes or seconds. Such as minutes: 15 or hours: 1
+timeframe:
+  minutes: 1
+
+# (Required)
+# A list of Elasticsearch filters used for find events
+# These filters are joined with AND and nested in a filtered query
+# For more info: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html
+filter:
+ - term:
+    level.raw:  "ERROR"
+
+# (Required)
+# The alert is use when a match is found
+alert:
+- "elastalert_modules.WxAlerter.WxAlerter"
+
+##########微信配置##########
+appid: appid
+secret: appid
+openid: 
+ - appid
+template_id: template_id
+
+#template_text下key对应微信模版Key. value的值对应es的返回字段名称，color对应微信字体颜色
+template_text:
+ appName:
+  value: appname
+  color: '#173177'
+ logTime:
+  value: logtime
+  color: '#173177'
+  type: time
+ message:
+  value: message
+  color: '#173177'
+ stackTrace:
+  value: stack_trace
+  color: '#173177'
