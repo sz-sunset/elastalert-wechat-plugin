@@ -6,4 +6,5 @@ elastalert微信订阅号模版报警插件
 
 ## 参考
 1.https://elastalert.readthedocs.io/en/latest/index.html
+
 2.https://github.com/anjia0532/elastalert-wechat-plugin/blob/master/config.yaml
