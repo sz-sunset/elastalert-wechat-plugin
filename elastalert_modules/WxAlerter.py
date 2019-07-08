@@ -78,7 +78,6 @@ class WxAlerter(Alerter):
         	for openidTemp in self.openid:
         		body["touser"] = openidTemp
         	try:
-			print(json.dumps(body))
 			response = requests.post(send_url,data=json.dumps(body))
         	except RequestException as e:
 			raise EAException("send message has error: %s" % e)
