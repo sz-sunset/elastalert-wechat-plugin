@@ -31,10 +31,6 @@ class WxAlerter(Alerter):
         self.access_token = ''                          #微信身份令牌
         self.template_id = self.rule.get('template_id')#模版id
         self.template_text = self.rule.get('template_text')#模版内容
-        print(self.template_text)
-        print(type(self.template_text))
-        print(self.openid)
-        print(type(self.openid))
         self.expires_in=datetime.datetime.now() - datetime.timedelta(seconds=60)#令牌过期时间
 
     def alert(self, matches):
