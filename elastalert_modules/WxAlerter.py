@@ -69,7 +69,9 @@ class WxAlerter(Alerter):
         	body = {"touser": '',"template_id": self.template_id,"data": ''}
         	templateData = { }
         	for templateKey in self.template_text.keys():
-        		value = matche[self.template_text[templateKey]["value"].decode('utf-8')]
+        		value = ''
+                	if matche.has_key(self.template_text[templateKey]["value"].decode('utf-8')):
+                    		value = matche[self.template_text[templateKey]["value"].decode('utf-8')]
         		if self.template_text[templateKey].has_key("type") and self.template_text[templateKey]["type"] == "time":
         			value = pretty_ts(value)
         		templateDataVal ={"value":value,"color":self.template_text[templateKey]["color"]}
