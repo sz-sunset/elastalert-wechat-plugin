@@ -62,27 +62,27 @@ class WxAlerter(Alerter):
         return self.access_token
         
     def send_template_data(self, matches):
-
-        # 微信发送消息文档      
-        send_url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' %(self.access_token)
-        for matche in matches:
-        	body = {"touser": '',"template_id": self.template_id,"data": ''}
-        	templateData = { }
-        	for templateKey in self.template_text.keys():
-        		value = ''
-                	if matche.has_key(self.template_text[templateKey]["value"].decode('utf-8')):
-                    		value = matche[self.template_text[templateKey]["value"].decode('utf-8')]
-        		if self.template_text[templateKey].has_key("type") and self.template_text[templateKey]["type"] == "time":
-        			value = pretty_ts(value)
-        		templateDataVal ={"value":value,"color":self.template_text[templateKey]["color"]}
-        		templateData[templateKey] = templateDataVal;
-        	body["data"] = templateData
-        	for openidTemp in self.openid:
-        		body["touser"] = openidTemp
-        	try:
-			response = requests.post(send_url,data=json.dumps(body))
-        	except RequestException as e:
-			raise EAException("send message has error: %s" % e)
+	try:
+		# 微信发送消息文档      
+		send_url = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=%s' %(self.access_token)
+		for matche in matches:
+			body = {"touser": '',"template_id": self.template_id,"data": ''}
+			templateData = { }
+			for templateKey in self.template_text.keys():
+				value = ''
+				if matche.has_key(self.template_text[templateKey]["value"].decode('utf-8')):
+					value = matche[self.template_text[templateKey]["value"].decode('utf-8')]
+				if self.template_text[templateKey].has_key("type") and self.template_text[templateKey]["type"] == "time":
+					value = pretty_ts(value)
+				templateDataVal ={"value":value,"color":self.template_text[templateKey]["color"]}
+				templateData[templateKey] = templateDataVal;
+			body["data"] = templateData
+			for openidTemp in self.openid:
+				body["touser"] = openidTemp
+        	
+		response = requests.post(send_url,data=json.dumps(body))
+        except Exception as e:
+		raise EAException("send message has error: %s" % e)
         elastalert_logger.info("send msg and response: %s" % response)
         
     def get_info(self):
